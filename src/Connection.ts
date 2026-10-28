@@ -44,8 +44,9 @@ export class Connection {
   private queue: Array<Command> = []
 
   constructor(readonly options: ConnectionOptions, readonly onFailure: (error: Error) => void = () => {}) {
-    if (!options.socketPath || Object.entries(options).some(([key, value]) => key !== "socketPath" && value !== undefined &&
-      (typeof value !== "number" || !Number.isSafeInteger(value) || value <= 0))) {
+    if (!options.socketPath || [options.connectTimeoutMs, options.requestTimeoutMs, options.queueTimeoutMs,
+      options.maxFrameBytes, options.maxPendingCommands].some((value) => value !== undefined &&
+      (!Number.isSafeInteger(value) || value <= 0))) {
       throw new Error("Watchman socketPath and positive finite integer limits are required")
     }
     this.framing = new Framing(options.maxFrameBytes ?? 1024 * 1024)
