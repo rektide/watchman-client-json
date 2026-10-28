@@ -27,7 +27,11 @@ This package ships **raw TypeScript**: `main`, `types`, and `exports` point at
 plain JavaScript-only runtimes cannot consume it directly. Constructors use
 TypeScript parameter properties, so Node's strip-only mode alone is insufficient.
 `build` only typechecks; there is no `dist` directory or generated JavaScript.
-The repository has not been pushed or published as part of this extraction.
+The package is distributed through [GitHub](https://github.com/rektide/watchman-client-json),
+not npm: `github:rektide/watchman-client-json#main`. The family includes its
+consumer [effect-watchman](https://github.com/rektide/effect-watchman), the
+backend-neutral contracts in [effect-watch-plus](https://github.com/rektide/effect-watch-plus),
+and the alternative wire codec [bser-esm](https://github.com/rektide/bser-esm).
 
 ## API
 
@@ -134,6 +138,11 @@ connection options; cleanup deadlines belong to the caller.
   cancellation without a name is connection-terminal. Unknown subscription
   names are ignored after validation. Ordinary subscription `error` and
   `is_fresh_instance` fields are delivered unchanged for the caller's policy.
+- After cancellation and named-subscription routing, unilateral string `log`
+  frames are ignored immediately, including when the command queue is idle. They
+  never consume a reply slot, buffer log text, or call a user logger. Existing
+  frame limits and bounded phase diagnostics still apply; malformed log metadata
+  is connection-terminal, matching the BSER peer's classifier.
 - `Delivery` overflow clears buffered hints and latches its first failure;
   future reads reject rather than silently losing events. This is local to that
   delivery; its owner decides when to detach/unsubscribe. There is no recovery,

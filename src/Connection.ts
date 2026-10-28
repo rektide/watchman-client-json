@@ -201,6 +201,8 @@ export class Connection {
           this.listeners.get(envelope.subscription)?.push(reply)
           return !this.terminal
         }
+        // Logs are unilateral: ignore without buffering or consuming a reply slot.
+        if (envelope.log !== undefined) return !this.terminal
         const pending = this.pending
         if (!pending) { this.fail(new Error("Watchman unsolicited response")); return false }
         if (envelope.error) { this.pending = undefined; pending.reject(new Error(envelope.error)); this.sendNext(); return !this.terminal }

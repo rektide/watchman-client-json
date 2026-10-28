@@ -8,13 +8,15 @@ author: GPT-6.1 Sol
 model: openai/gpt-6.1-sol#xhigh
 date: 2026-10-28
 sources:
+  - resource: "opencode://ses_e7c90f1d6ffeviS28mp5Msdsk1"
+    title: Human approves GitHub publication and authorizes the JSON log-routing parity fix; implement bounded ignore and pin command-slot ownership before, between and after replies
   - resource: "opencode://ses_e7c9cffdbffe7o9wLw1Zgf0N2h"
     title: Commissioned standalone JSON client extraction; boundary and peer-dependency decisions, direct transport test ports, raw-TypeScript packaging, and local verification
   - resource: "https://github.com/rektide/effect-watchman/tree/a2cae66e57e8f0485cb850590ff1adb3353c0cbe"
     title: Exact source revision; local checkout verified at this tip before extraction
-  - resource: "file:///home/rektide/src/effect-watchman/src/Connection.ts"
+  - resource: "https://github.com/rektide/effect-watchman/blob/a2cae66e57e8f0485cb850590ff1adb3353c0cbe/src/Connection.ts"
     title: Socket lifecycle, schema definitions, FIFO command ownership, dispatch, and bounded Delivery source read and extracted
-  - resource: "file:///home/rektide/src/effect-watchman/src/Framing.ts"
+  - resource: "https://github.com/rektide/effect-watchman/blob/a2cae66e57e8f0485cb850590ff1adb3353c0cbe/src/Framing.ts"
     title: Reviewed S1 single-scan, segmented framing with 16 KiB page coalescing copied without algorithm changes
   - resource: "file:///home/rektide/src/effect-watchman/src/Diagnostics.ts"
     title: Internal bounded attribution copied unchanged for source comparability and counter keepers
@@ -28,7 +30,7 @@ sources:
     title: Scripted transport regressions ported to public wire calls; filesystem-specific tests intentionally not copied
   - resource: "file:///home/rektide/src/effect-watchman/test/query-transport.test.ts"
     title: Canceled-query ownership, sibling isolation, rich reply decoding and terminal deadline tests ported without enumeration policy
-  - resource: "file:///home/rektide/src/effect-watchman/test/framing.test.ts"
+  - resource: "https://github.com/rektide/effect-watchman/blob/a2cae66e57e8f0485cb850590ff1adb3353c0cbe/test/framing.test.ts"
     title: All S1 deterministic scan/copy/materialization and storage-bound keepers copied
   - resource: "file:///home/rektide/src/effect-watchman/package.json"
     title: Original MIT declaration and exact Effect 4.0.1 dependency version confirmed
@@ -40,6 +42,31 @@ verification:
 ---
 
 # Standalone extraction receipt
+
+## 2026-10-28 authorized follow-up
+
+The human has approved effect-watchman's dual-backend ledger, accepted its
+documented BSER UTF-8 degradation permanently, and authorized both this client's
+GitHub publication and the previously blocked JSON log-classifier fix.
+
+The client now decodes optional string `log` metadata and ignores a log frame
+after cancellation/named-subscription discrimination, before considering the
+pending command. This matches the BSER classifier: no reply-slot consumption,
+no retained log queue and no user logger callback. Existing frame limits and
+bounded phase diagnostics apply. Malformed non-string log metadata still fails
+the connection. `Envelope.log?: string` is the corresponding additive schema
+surface; version remains **0.1.0**, raw TypeScript, no build artifacts or npm.
+
+Verification: full client suite **41 pass, 0 fail**, 731 assertions; the new
+before/between/after-replies log keeper repeated ten times **10 pass, 0 fail**,
+110 assertions; build/typecheck clean. Its progress-subscription handshakes prove
+the log was processed while the current command remained unresolved; no sleep
+stands in for that ordering. GitHub publication follows this checked checkpoint.
+The original extraction account below remains historical, not a claim that the
+repository is still unpublished after the authorized follow-up.
+The historical source connection/framer/test citations are now bound to the
+recorded extraction revision because the consumer cutover replaced/removed their
+old local paths.
 
 ## Outcome and ownership
 

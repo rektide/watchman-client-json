@@ -41,6 +41,51 @@ test("already-interrupted connect is terminal and failure notification is latche
   }, () => undefined)
 })
 
+test("unilateral logs before, between and after replies never consume a command slot", async () => {
+  await fixture(async (peer) => {
+    const failures: Error[] = []
+    const connection = new Connection({ socketPath: peer.socketPath }, (error) => failures.push(error))
+    const signal = new AbortController().signal
+    const completed = [false, false]
+    let progress = 0
+    try {
+      await connection.connect(signal)
+      connection.listen("progress", { push: () => { progress++ }, fail: () => {} })
+      const settled = Promise.allSettled(["first", "second"].map((name, index) =>
+        connection.command(["clock", name], "clock", `c:${name}`, signal).then((value) => {
+          completed[index] = true
+          return value
+        })))
+      await until(() => peer.commands.length === 1)
+      const socket = [...peer.sockets][0]
+      if (!socket) throw new Error("Missing log-routing peer")
+      socket.write('{"log":"","unilateral":true}\n{"subscription":"progress","files":[]}\n')
+      await until(() => progress === 1 || failures.length > 0)
+      expect(failures).toEqual([])
+      expect(completed).toEqual([false, false])
+      expect(peer.commands).toEqual([["clock", "first"]])
+      expect(connection.idle).toBe(false)
+
+      socket.write('{"clock":"c:first"}\n{"log":"between replies","unilateral":true}\n{"subscription":"progress","files":[]}\n')
+      await until(() => (progress === 2 && peer.commands.length === 2) || failures.length > 0)
+      expect(failures).toEqual([])
+      expect(completed).toEqual([true, false])
+      expect(peer.commands).toEqual([["clock", "first"], ["clock", "second"]])
+      expect(connection.idle).toBe(false)
+
+      socket.write('{"clock":"c:second"}\n{"log":"idle log","unilateral":true}\n{"subscription":"progress","files":[]}\n')
+      expect(await settled).toMatchObject([
+        { status: "fulfilled", value: { clock: "c:first" } },
+        { status: "fulfilled", value: { clock: "c:second" } }
+      ])
+      await until(() => progress === 3 || failures.length > 0)
+      expect(failures).toEqual([])
+      expect(connection.idle).toBe(true)
+      connection.check()
+    } finally { connection.close() }
+  }, () => undefined)
+})
+
 test("interrupted delayed subscribe B retains wire ownership for cleanup without harming A", async () => {
   await fixture(async (peer) => {
     const connection = new Connection({ socketPath: peer.socketPath, requestTimeoutMs: 1000 })
@@ -193,7 +238,7 @@ test("every UTF-8 byte split traverses the socket client with exact frame-byte l
 
 test("malformed JSON/schema/UTF-8 and oversized complete/unfinished frames latch terminal failure", async () => {
   for (const data of [Buffer.from("not JSON\n"), Buffer.from("\n"), Buffer.from('{"clock":123}\n'),
-    Buffer.from('{"subscription":123}\n'), Buffer.from([123, 34, 255, 34, 58, 49, 125, 10]),
+    Buffer.from('{"subscription":123}\n'), Buffer.from('{"log":123}\n'), Buffer.from([123, 34, 255, 34, 58, 49, 125, 10]),
     Buffer.from("x".repeat(33)), Buffer.from("x".repeat(33) + "\n")]) {
     await fixture(async (peer) => {
       const connection = new Connection({ socketPath: peer.socketPath, maxFrameBytes: 32, requestTimeoutMs: 1000 })

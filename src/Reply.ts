@@ -25,7 +25,8 @@ export type Reply = typeof Reply.Type
 export const Envelope = Schema.Struct({
   error: Schema.optional(Schema.String),
   subscription: Schema.optional(Schema.String),
-  canceled: Schema.optional(Schema.Boolean)
+  canceled: Schema.optional(Schema.Boolean),
+  log: Schema.optional(Schema.String)
 })
 export type Envelope = typeof Envelope.Type
 
