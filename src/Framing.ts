@@ -1,4 +1,4 @@
-import { count, measure, retained } from "./Diagnostics.ts"
+import { count, measure, retained } from "./Diagnostics.js"
 
 /** Byte framing only. Small fragments occupy pages, not one object per read. */
 export class Framing {

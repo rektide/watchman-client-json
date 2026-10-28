@@ -7,7 +7,6 @@
     "exactOptionalPropertyTypes": true,
     "skipLibCheck": true,
     "types": ["bun"],
-    "allowImportingTsExtensions": true,
     "noEmit": true
   },
   "include": ["watchman-client-json.ts", "src/**/*.ts", "test/**/*.ts"]

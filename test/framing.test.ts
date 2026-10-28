@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test"
-import { Framing } from "../src/Framing.ts"
-import { capture, measure } from "../src/Diagnostics.ts"
+import { Framing } from "../src/Framing.js"
+import { capture, measure } from "../src/Diagnostics.js"
 
 const payload = Buffer.from(JSON.stringify({ clock: "c:1", files: [{ name: "café/😀\\escaped\nname", type: "f" }] }))
 const wire = Buffer.concat([payload, Buffer.from("\n")])

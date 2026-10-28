@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import type { Socket } from "node:net"
 import { Connection, Delivery, SubscriptionCanceled, type Reply } from "watchman-client-json"
-import { fixture, reply, until } from "./peer.ts"
+import { fixture, reply, until } from "./peer.js"
 
 test("construction validates the former owner boundary's socket and limits", () => {
   for (const options of [{ socketPath: "" }, { socketPath: "socket", maxFrameBytes: 0 },

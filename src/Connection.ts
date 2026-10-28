@@ -1,8 +1,8 @@
 import { createConnection, type Socket } from "node:net"
 import { Schema } from "effect"
-import { begin, end, measure } from "./Diagnostics.ts"
-import { Framing } from "./Framing.ts"
-import { ConfigReply, Envelope, QueryReply, Reply } from "./Reply.ts"
+import { begin, end, measure } from "./Diagnostics.js"
+import { Framing } from "./Framing.js"
+import { ConfigReply, Envelope, QueryReply, Reply } from "./Reply.js"
 
 const decodeReply = Schema.decodeUnknownSync(Reply)
 const decodeEnvelope = Schema.decodeUnknownSync(Envelope)
