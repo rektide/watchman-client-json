@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { Connection, Delivery, type Reply } from "../watchman-client-json.ts"
+import { Connection, Delivery, type Reply } from "watchman-client-json"
 import { fixture, reply, until } from "./peer.ts"
 
 test("canceled query retains wire ownership; sibling pushes and query-local failures survive", async () => {
